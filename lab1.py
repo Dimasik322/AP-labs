@@ -2,6 +2,7 @@ import os
 import json
 import requests
 import csv
+import time
 from bs4 import BeautifulSoup
 
 URL = "https://www.cbr-xml-daily.ru/"
@@ -14,12 +15,13 @@ date = file['Date']
 value = file['Valute']['USD']['Value']
 previous_URL = file['PreviousURL']
 
-with open('exchanges.csv', 'w', newline='') as csvfile:
+with open('dataset.csv', 'w', newline='') as csvfile:
     filewriter = csv.writer(csvfile, delimiter=',',
     quotechar='|', quoting=csv.QUOTE_MINIMAL)
     filewriter.writerow(['Date', 'Value'])
     filewriter.writerow([date[:10], value])
-    for i in range(10):
+    for i in range(1000):
+        time.sleep(0.21)
         URL = 'https:' + previous_URL
         file = requests.get(URL, headers={"User-Agent":"Mozilla/5.0"}).json()
         date = file['Date']
