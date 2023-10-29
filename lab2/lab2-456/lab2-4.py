@@ -21,7 +21,6 @@ def value_by_date(_date):
         number = 0
         flag = False
         for row in readerX:
-            print(row)
             if row[0] == _date:
                 flag = True
                 break;
@@ -38,24 +37,48 @@ def value_by_date(_date):
                     else:
                         i+=1
 
+#для разбивки по неделям
+def value_by_date(_date):
+    year = date.fromisoformat(_date).year
+    month = date.fromisoformat(_date).month
+    day = date.fromisoformat(_date).day
+    day_of_week = date.fromisoformat(_date).isocalendar()[2]
+    min_date = date.fromisoformat(_date) - timedelta(days=day_of_week)
+    max_date = date.fromisoformat(_date) + timedelta(days=(7-day_of_week))
+    for i in range(0, 8):
+        for j in range(0, 8):
+            first = min_date + timedelta(days=i)
+            last = max_date - timedelta(days=j)
+            path = os.getcwd() + f"/lab2/lab2-3/{str(first)[0:4]}{str(first)[5:7]}{str(first)[8:10]}_{str(last)[0:4]}{str(last)[5:7]}{str(last)[8:10]}.csv"
+            if os.path.exists(path) == True:
+                with open(path, "r") as file:
+                    reader = csv.reader(file, delimiter=",")
+                    for row in reader:
+                        if row[0] == _date:
+                            return row[1]
+    return None
+                        
 #для разбивки по годам
 def value_by_date(_date):
     year = date.fromisoformat(_date).year
     month = date.fromisoformat(_date).month
     day = date.fromisoformat(_date).day
     day_of_week = date.fromisoformat(_date).isocalendar()[2]
-    min_date = date.fromisoformat(_date) - day_of_week * timedelta(days=1)
-    max_date = date.fromisoformat(_date) + ((7 - day_of_week) * timedelta(days=1))
-    for i in range(0, 7):
-        for j in range(0, 7):
-            i = min_date + timedelta(days=i)
-            j = max_date - timedelta(days=j)
-            print(i, j)
-    if os.path.exists(f"/lab2/lab2-2/{str(min_date)[0:4]}{str(min_date)[5:7]}{str(min_date)[8:10]}_{str(max_date)[0:4]}{str(max_date)[5:7]}{str(max_date)[8:10]}") == True:
-        with open(f'/lab2/lab2-2/{str(min_date)[0:4]}{str(min_date)[5:7]}{str(min_date)[8:10]}_{str(max_date)[0:4]}{str(max_date)[5:7]}{str(max_date)[8:10]}', "r") as file:
-             reader = csv.reader(file, delimiter=",")
-             print("fk yes")
-    #print(year, month, day_of_week)
+    min_date = date.fromisoformat(f'{year}-01-01')
+    max_date = date.fromisoformat(f'{year}-12-31')
+    #print(min_date, max_date)
+    for i in range(0, 365):
+        for j in range(0, 365):
+            first = min_date + timedelta(days=i)
+            last = max_date - timedelta(days=j)
+            path = os.getcwd() + f"/lab2/lab2-3/{str(first)[0:4]}{str(first)[5:7]}{str(first)[8:10]}_{str(last)[0:4]}{str(last)[5:7]}{str(last)[8:10]}.csv"
+            if os.path.exists(path) == True:
+                with open(path, "r") as file:
+                    reader = csv.reader(file, delimiter=",")
+                    for row in reader:
+                        if row[0] == _date:
+                            return row[1]  
+    return None 
 
 
-print(value_by_date('1992-07-03'))
+print(value_by_date('2004-06-26'))
