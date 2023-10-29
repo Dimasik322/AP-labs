@@ -1,1 +1,2 @@
-#next()
+def next():
+    if 
