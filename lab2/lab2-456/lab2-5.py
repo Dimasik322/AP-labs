@@ -2,9 +2,9 @@ import csv
 
 i = 1
 
-def next():
-    global i
-    if i <= 7186:
+def next()->str:
+    """возвращает кортежи [дата, значение]"""
+    for i in range(1, 7187):
         with open('lab1/dataset.csv', "r") as file:
             reader = csv.reader(file, delimiter=",")
             j = 0
@@ -13,11 +13,12 @@ def next():
                     x = row
                     break
                 j+=1
-            file.close()
-        i+=1
-        return row
+        file.close()
+        yield row
         
-print(next())
-print(next())
-print(next())
-print(next())
+def main():
+    for i in next():
+        print(i)
+
+if __name__ == '__main__':
+    main()

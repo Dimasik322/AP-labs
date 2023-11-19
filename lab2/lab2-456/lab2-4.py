@@ -4,8 +4,8 @@ from datetime import date
 from datetime import timedelta
 import os.path
 
-#для dataset
-def value_by_date(_date):
+def value_by_date(_date:date)->str:
+    """возвращает значение по дате из файла dataset"""
     with open("lab1/dataset.csv", "r", newline='') as dataset:
         reader = csv.reader(dataset, delimiter = ",")
         next(reader)
@@ -14,8 +14,8 @@ def value_by_date(_date):
                 return row[1]
         return None
     
-#для X и Y 
-def value_by_date(_date):
+def value_by_date(_date:date)->str:
+    """возвращает значение по дате из файла X"""
     with open("lab2/lab2-1/X.csv", "r", newline='') as X:
         readerX = csv.reader(X, delimiter="\n")
         number = 0
@@ -37,8 +37,8 @@ def value_by_date(_date):
                     else:
                         i+=1
 
-#для разбивки по неделям
-def value_by_date(_date):
+def value_by_date(_date:date)->str:
+    """возвращает значение по дате из файлов по неделям"""
     year = date.fromisoformat(_date).year
     month = date.fromisoformat(_date).month
     day = date.fromisoformat(_date).day
@@ -58,8 +58,8 @@ def value_by_date(_date):
                             return row[1]
     return None
                         
-#для разбивки по годам
-def value_by_date(_date):
+def value_by_date(_date:date)->str:
+    """возвращает значение по дате из файла по годам"""
     year = date.fromisoformat(_date).year
     month = date.fromisoformat(_date).month
     day = date.fromisoformat(_date).day
@@ -81,4 +81,8 @@ def value_by_date(_date):
     return None 
 
 
-print(value_by_date('2004-06-26'))
+def main():
+    print(value_by_date('2004-06-26'))
+
+if __name__ == '__main__':
+    main()
