@@ -23,9 +23,11 @@ class MainWindow(QMainWindow):
         self.ui.pushButton.clicked.connect(self.returnValue)
         path = self.ui.pushButtonPath.clicked.connect(self.setPath)
 
+    """метод для указывания пути к датасетам"""
     def setPath(self):
         self.path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select Folder')
 
+    """метод поиска значения"""
     def returnValue(self):
         input_value = self.ui.input_line.text()
         index = str(self.ui.comboBox.currentText())
@@ -38,21 +40,6 @@ class MainWindow(QMainWindow):
         elif (index == "разбивка по годам"):
             value = findValueYear(self.path, input_value)
         self.ui.output_line.setText(str(value))
-
-    def make_plot(self):
-        df = pd.read_csv('lab1/dataset.csv', sep=',')
-        df = df.dropna()
-        df = df.query('Date >= "1998-01-01"')
-        fig = plt.figure(figsize=(10, 5))
-        plt.ylabel('Значение')
-        plt.xlabel('Дата')
-        plt.title('Курс Доллара')
-        df = df.sort_values(by="Date", ascending=True)
-        x = df["Date"]
-        y = df["Value"]
-        plt.scatter(x, y, color='black', linestyle='-', linewidths=1)
-        plt.savefig('lab3/figure.png')
-
 
 def application():
     app = QtWidgets.QApplication([])

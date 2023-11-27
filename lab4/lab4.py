@@ -6,7 +6,7 @@ from datetime import date
 import calendar
 import math
 
-
+"""приведение DF к нормальному виду(считывание, удаление None значений, добавление отклонений от среднего и медианы)"""
 def datasetNormalise()->DataFrame:
     df = pd.read_csv('lab1/dataset.csv', sep=',')
     df = df.dropna()
@@ -17,13 +17,16 @@ def datasetNormalise()->DataFrame:
     df = df.sort_values(by="Date", ascending=True)
     return df
 
+"""нахождение значений с отлонением от медианы >= заданного значения value"""
 def findValueByMean(df:DataFrame, value:float)->DataFrame:
-    return df.query('Mean > @value')
+    return df.query('Mean >= @value')
 
+"""нахождение значений во временном отрезке"""
 def findValueInTimedelta(df:DataFrame, first_date:date, last_date:date)->DataFrame:
     #print(df)
     return df.query('Date >= @first_date and Date <= @last_date')
 
+"""построение графиков значений в определенном месяце, среднего значения и медианы"""
 def makePlot(df:DataFrame, year:int, month:int):
     fig = plt.figure(figsize=(10, 5))
     plt.ylabel('Значение')
@@ -35,6 +38,23 @@ def makePlot(df:DataFrame, year:int, month:int):
     #print()
     new_df = findValueInTimedelta(df, first, last)
     #print(findValueInTimedelta(df, first, last))
+    x = new_df["Date"]
+    y = new_df["Value"]
+    y1 = new_df["Value"].mean()
+    y2 = new_df["Value"].median()
+    plt.scatter(x, y, color='black', linestyle='-', linewidths=1)
+    plt.axhline (y=y1, color='red', linestyle='--', label='Среднее значение')
+    plt.axhline (y=y2, color='brown', linestyle='--', label='Медиана') 
+    plt.legend()
+    plt.show()
+
+"""построение графика курса за весь период"""
+def makePlot(df:DataFrame):
+    fig = plt.figure(figsize=(10, 5))
+    plt.ylabel('Значение')
+    plt.xlabel('Дата')
+    plt.title('Курс Доллара')
+    new_df = df.query('Date >= "1998-01-01"')
     x = new_df["Date"]
     y = new_df["Value"]
     y1 = new_df["Value"].mean()

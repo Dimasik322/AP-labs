@@ -4,6 +4,8 @@ from datetime import date
 from datetime import timedelta
 import os.path
 
+""""функции поиска значения в датасетах"""
+
 def findValueDataset(path:str, _date:date)->str:
     """возвращает значение по дате из файла dataset"""
     with open(f"{path}/dataset.csv", "r", newline='') as dataset:
