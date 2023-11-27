@@ -68,7 +68,7 @@ def makePlot(df:DataFrame):
 
 def main():
     df = datasetNormalise()
-    makePlot(df, 2022, 3)
+    #makePlot(df, 2022, 3)
     #print(findValueInTimedelta(df, '2005-03-10', '2005-04-01'))
     #new_df = findValueInTimedelta(df, '2000-01-01', '2000-01-31')
     #print(new_df)
@@ -81,7 +81,9 @@ def main():
     #plt.title('Курс Доллара')
     #plt.scatter(x, y, color='black', linestyle='-.', linewidths=1) 
     #plt.show()
-    #df_month = df.groupby([df.Date.dt.year, df.Date.dt.month]).mean()
-
+    #print(df.dtypes())
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    GB = df.groupby([(df["Date"].dt.year), (df["Date"].dt.month)]).sum()
+    print(GB)
 if __name__=="__main__":
     main()
